@@ -4,13 +4,20 @@
 
 This image is not just another PHP5.5 image for Docker.
 
+Looking for a PHP5.6 image for Docker? Checkout [ghifari160/apache-php56]!
+
 ## Why use this image ##
 This image is based on [ghifari160/apache], which forces Apache to run in the
 foreground and output its log into the container's stdio.
 
-__Note:__ PHP5.5 has reached its End of Life, it should not be used on a
-production environment. This image utilizes PHP5.5.38. The use of this image
-on a production server is ill advised. __*Use at your own risk.*__
+### Warnings ###
+- PHP5.5 has reached its End of Life, it should not be used on a
+  production environment. This image utilizes PHP5.5.38. The use of this image
+  on a production server is ill advised. __*Use at your own risk.*__
+- Reliable PHP5.5 binaries are no longer available on any package manager. This
+  image builds PHP5.5 binaries during the build process. Build tools and their
+  dependencies are installed purely to build the binaries. They are removed
+  after the binaries are built, installed, and configured.
 
 ## Installation ##
 By default this image should be run as a daemon.
@@ -43,10 +50,24 @@ another port on the host computer. Example:
 docker run -d -p 8080:80 ghifari160/apache-php55
 ```
 
+#### macOS permission fixes
+On macOS, shared volumes remains owned by the host user and group. Permissions
+on these shared volumes are also determined by the host, unchangeable from
+guest. On the home directory, the default owner and permission are
+`<user>:staff` and `755`. Apache needs write access to its files and
+directories. A workaround is to set the `www-data` UID and GID to `1000` and
+`50`. The init script will do this if the value of `G16_MACOS` is `yes`. Use
+the parameter `-e G16_MACOS=yes` to enable this workaround. Example:
+```
+docker run -d -e G16_MACOS=yes ghifari160/apache-php55
+```
+
 ## Tags ##
 | Tags                      | Ubuntu Version | Size  |
-|---------------------------|----------------|-------|
-| `latest` `16.04` `xenial` | 16.04          | [![](https://images.microbadger.com/badges/image/ghifari160/apache-php55.svg)](https://microbadger.com/images/ghifari160/apache-php55 "Get your own image badge on microbadger.com") |
-| `17.10` `artful`          | 17.10          | [![](https://images.microbadger.com/badges/image/ghifari160/apache-php55:17.10.svg)](https://microbadger.com/images/ghifari160/apache-php55:17.10 "Get your own image badge on microbadger.com") |
+|---------------------------|----------------|:-----:|
+| `16.04` `xenial`          | 16.04          | [![](https://images.microbadger.com/badges/image/ghifari160/apache-php55:16.04.svg)](https://microbadger.com/images/ghifari160/apache-php55:16.04 "Get your own image badge on microbadger.com")|
+| `17.10` `artful`          | 17.10          | [![](https://images.microbadger.com/badges/image/ghifari160/apache-php55:17.10.svg)](https://microbadger.com/images/ghifari160/apache-php55:17.10 "Get your own image badge on microbadger.com")|
+| `latest` `18.04` `bionic` | 18.04          |[![](https://images.microbadger.com/badges/image/ghifari160/apache-php55.svg)](https://microbadger.com/images/ghifari160/apache-php55 "Get your own image badge on microbadger.com")|
 
 [ghifari160/apache]: https://github.com/ghifari160/docker-apache
+[ghifari160/apache-php56]: https://github.com/ghifari160/docker-apache-php56

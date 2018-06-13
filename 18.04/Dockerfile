@@ -27,7 +27,8 @@ RUN apt update && \
 
 # Build and install PHP v5.5.38
     cd /php-src && ./buildconf --force && \
-    ./configure --with-apxs2=/usr/bin/apxs2 --enable-maintainer-zts && \
+    ./configure --with-apxs2=/usr/bin/apxs2 --enable-maintainer-zts \
+                --with-mysqli && \
     make && make install && \
 
 # Clean up build environment

@@ -27,11 +27,21 @@ RUN apt update && \
 
 # Build and install PHP v5.5.38
     cd /php-src && ./buildconf --force && \
-    ./configure --with-apxs2=/usr/bin/apxs2 --enable-maintainer-zts && \
+    ./configure --with-apxs2=/usr/bin/apxs2 --enable-maintainer-zts \
+                --with-mysqli && \
+    make && make install && \
+
+# Build and install Xdebug
+    cd / && \
+    wget https://xdebug.org/files/xdebug-2.5.5.tgz -O xdebug.tar.gz && \
+    tar -xvzf xdebug.tar.gz && cd /xdebug-2.5.5 && \
+    phpize && \
+    ./configure --enable-xdebug && \
     make && make install && \
 
 # Clean up build environment
-    rm -rf /php-src/* /bison-2.7/* /bison-2.7.tar.gz && \
+    rm -rf /php-src/* /bison-2.7/* /bison-2.7.tar.gz /xdebug-2.5.5/* \
+           /xdebug.tar.gz && \
 
 # Uninstall build prerequisites
     apt remove --autoremove -y autoconf automake libtool gcc g++ \
